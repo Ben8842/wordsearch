@@ -4,6 +4,44 @@ import "./App.css";
 class Building extends Component {
   constructor(props) {
     super(props);
+
+    var alphArray = [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+      "U",
+      "V",
+      "W",
+      "X",
+      "Y",
+      "Z",
+    ];
+    function shuffle(arry) {
+      arry.sort(() => Math.random() - 0.5);
+    }
+
+    shuffle(alphArray);
+    var randomWords = require("random-words");
+
+    var swords = randomWords({ exactly: 5, maxLength: 7 });
+
     this.state = {
       showInfo: false,
       xCoor: null,
@@ -19,6 +57,9 @@ class Building extends Component {
       solved8: false,
       iChoice: false,
       iChoiceQ: false,
+      alphaRand: alphArray,
+      secretWords: swords,
+      gridStatus: [],
     };
   }
 
@@ -44,14 +85,31 @@ class Building extends Component {
     });
   }
 
-  showCode(x, y, sizes) {
+  showCode(x, y, sizes, level, findex) {
+    var {
+      showInfo,
+      xCoor,
+      yCoor,
+      isChess,
+      boardS,
+      chessCodeLetter,
+      chessCodeNumber,
+      choicesX,
+      choicesY,
+      numOfQueens,
+      solved8,
+      conflict,
+      alphaRand,
+    } = this.state;
     this.setState((state) => {
       if (sizes == 8) {
         var chessArray = ["a", "b", "c", "d", "e", "f", "g", "h"];
         var chessX = chessArray[x];
         var chessY = y + 1;
+        var letterChoices = alphaRand[findex];
         const holderX = [...state.choicesX, x];
         const holderY = [...state.choicesY, y];
+        const holderG = [...state.gridStatus, letterChoices];
         var newNum = 8 - state.choicesX.length - 1;
 
         return {
@@ -66,6 +124,7 @@ class Building extends Component {
           numOfQueens: newNum,
           iChoice: false,
           iChoiceQ: false,
+          gridStatus: holderG,
         };
       } else {
         const holderX = [...state.choicesX, x];
@@ -117,43 +176,66 @@ class Building extends Component {
       numOfQueens,
       solved8,
       conflict,
+      alphaRand,
+      secretWords,
     } = this.state;
     var run = x;
     var rise = y;
     var sizes = this.props.sizeValue;
     var level = 0;
+    var superIndex = y * sizes + x;
+    var first = secretWords[0];
+
+    function shuffle(arry) {
+      arry.sort(() => Math.random() - 0.5);
+    }
 
     var losecondition = 0;
     var z;
     for (z = 0; z < choicesX.length; z++) {
       if (choicesX[z] == x && choicesY[z] == y) {
         level = 1;
-      } else if ((choicesX[z] == x) | (choicesY[z] == y)) {
+      } /*else if ((choicesX[z] == x) | (choicesY[z] == y)) {
         level = 2;
-      } else if (
+      }  else if (
         Math.abs(choicesX[z] - x) == Math.abs(choicesY[z] - y) &&
         xCoor != null
       ) {
         level = 3;
-      }
+      }*/
     }
 
     if (level == 0) {
-      losecondition = losecondition + 1;
+      var findex = (x * sizes + y) % 26;
 
-      return (
-        <button
-          id="square"
-          codex={x}
-          codey={y}
-          onClick={() => this.showCode(run, rise, sizes, level)}
-        >
-          .
-        </button>
-      );
+      var solution = first.charAt(0).toUpperCase();
+      if (superIndex == 0) {
+        return (
+          <button
+            id="square"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+          >
+            {solution}
+          </button>
+        );
+      } else {
+        return (
+          <button
+            id="square"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+          >
+            {alphaRand[findex]}
+          </button>
+        );
+      }
     } else if (level == 1) {
       // this.incrementQ();
       const valueQ = 8 - this.state.numOfQueens;
+      var findex = (x * sizes + y) % 26;
       return (
         <button
           id="squareSelected"
@@ -161,10 +243,10 @@ class Building extends Component {
           codey={y}
           onClick={() => this.invalidChoiceQ(run, rise, sizes, level)}
         >
-          {valueQ}
+          {alphaRand[findex]}
         </button>
       );
-    } else if (level == 2) {
+    } /*else if (level == 2) {
       return (
         <button
           id="squarePath"
@@ -186,55 +268,8 @@ class Building extends Component {
           D
         </button>
       );
-    }
+    }*/
   }
-
-  /*
-    if (xCoor == x && yCoor == y) {
-      return (
-        <button
-          id="squareSelected"
-          codex={x}
-          codey={y}
-          onClick={() => this.showCode(run, rise, sizes)}
-        >
-          Q
-        </button>
-      );
-    } else if ((xCoor == x) | (yCoor == y)) {
-      return (
-        <button
-          id="squarePath"
-          codex={x}
-          codey={y}
-          onClick={() => this.showCode(run, rise, sizes)}
-        >
-          P
-        </button>
-      );
-    } else if (Math.abs(xCoor - x) == Math.abs(yCoor - y) && xCoor != null) {
-      return (
-        <button
-          id="squareDiagonal"
-          codex={x}
-          codey={y}
-          onClick={() => this.showCode(run, rise, sizes)}
-        >
-          D
-        </button>
-      );
-    } else
-      return (
-        <button
-          id="square"
-          codex={x}
-          codey={y}
-          onClick={() => this.showCode(run, rise, sizes)}
-        >
-          .
-        </button>
-      );
-  }*/
 
   render() {
     var {
@@ -250,6 +285,8 @@ class Building extends Component {
       numOfQueens,
       iChoice,
       iChoiceQ,
+      secretWords,
+      gridStatus,
     } = this.state;
     const boardA = this.props.sizeValue;
 
@@ -258,8 +295,6 @@ class Building extends Component {
 
     var x;
     var y;
-
-    var chessArray = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
     for (y = 0; y < boardA; y++) {
       for (x = 0; x < boardA; x++) {
@@ -281,13 +316,18 @@ class Building extends Component {
 
     const moreDisplay = (
       <div>
-        {chessCodeLetter}
-        {chessCodeNumber}
+        <ul>
+          <li>{secretWords[0]}</li>
+          <li>{secretWords[1]}</li>
+          <li>{secretWords[2]}</li>
+          <li>{secretWords[3]}</li>
+          <li>{secretWords[4]}</li>
+        </ul>
         <ol>
           {choicesX.map((value, index) => {
             return (
               <li key={index}>
-                ( {value} , {choicesY[index]} ){" "}
+                ( {value} , {choicesY[index]}, {gridStatus[index]} )
               </li>
             );
           })}
@@ -338,13 +378,19 @@ class Building extends Component {
     const noneDisplay = (
       <div class="column">
         <p>
-          Click on an empty square to add your Queens! If you are able to find a
-          way to add {boardA} queens, you win!
+          Search for Words
+          <ul>
+            <li>{secretWords[0]}</li>
+            <li>{secretWords[1]}</li>
+            <li>{secretWords[2]}</li>
+            <li>{secretWords[3]}</li>
+            <li>{secretWords[4]}</li>
+          </ul>
         </p>
       </div>
     );
 
-    const winchecker = <span>Queens left = {numOfQueens}</span>;
+    const winchecker = <span>Words left = {numOfQueens}</span>;
 
     const winpuzzle = (
       <span>
@@ -412,7 +458,7 @@ class App extends Component {
 
     const inputBox = (
       <div>
-        Choose the size of your chess board
+        Choose the size of your board
         <form>
           <input type="number" class="button" id="sizeHere"></input>
           <button
@@ -427,7 +473,7 @@ class App extends Component {
     );
     return (
       <div>
-        <p class="toptitle">Eight Queens Puzzle</p>
+        <p class="toptitle">Word Search</p>
         <Building sizeValue={count} />
         <div className="HeaderSpot">{inputBox}</div>
       </div>
