@@ -42,7 +42,7 @@ class Building extends Component {
     var randomWords = require("random-words");
 
     var swords = randomWords({ exactly: 5, maxLength: 7 });
-    console.log(swords);
+
     function charSplit(stringy) {
       var t;
       var q = [];
@@ -60,7 +60,7 @@ class Building extends Component {
       charSplit(swords[4]),
     ];
     var sizing = this.props.sizeValue;
-    console.log(objSol[0].length + "secretObj");
+
     function randomNumber(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -105,10 +105,6 @@ class Building extends Component {
       randomNumber(0, sizing - objSol[4].length),
     ];
 
-    console.log(objSol);
-
-    console.log(sizeArray + "ADJ");
-    console.log(target + "ADJH");
     this.state = {
       showInfo: false,
       xCoor: null,
@@ -187,7 +183,7 @@ class Building extends Component {
   }
 
   /*foundWord(x, y, size, level, findex, num) {
-    console.log("you found one!");
+    .log("you found one!");
     var {
       showInfo,
       xCoor,
@@ -211,11 +207,12 @@ class Building extends Component {
     });
   }*/
 
-  foundWord(x, y, sizes, level, findex, num) {
-    var { secretWords, foundH } = this.state;
+  foundWord(x, y, sizes, level, findex, num, rangeH, rangeL) {
+    var { secretWords, foundH, choicesX, choicesY } = this.state;
     this.setState((state) => {
       const holderX = [...state.choicesX, x];
       const holderY = [...state.choicesY, y];
+
       const foundHold = [...state.foundH, secretWords[num]];
       console.log(foundH);
       return {
@@ -230,6 +227,35 @@ class Building extends Component {
         foundH: foundHold,
       };
     });
+    console.log(choicesX);
+    /*var wide = secretWords[num].length;
+    var c;
+    var p;
+    while (c < wide) {
+      c++;
+      x++;
+      if (y * sizes + x < rangeH) {
+        p++;
+      }
+    }
+    x = x - wide;
+    var d;
+    var e;
+    while (d < wide) {
+      d++;
+      x--;
+      if (y * sizes + x > rangeL) {
+        e++;
+      }
+    }
+    var q;
+    for (q = 0; q < p; q++) {
+      console.log(e + "" + p);
+      this.setState((prevstate) => {
+        choicesX = [...prevstate.choicesX, x + q];
+        choicesY = [...prevstate.choicesY, y];
+      });
+    }*/
   }
 
   renderSquare(x, y) {
@@ -306,7 +332,9 @@ class Building extends Component {
             id="squareM"
             codex={x}
             codey={y}
-            onClick={() => this.foundWord(run, rise, sizes, level, findex, 0)}
+            onClick={() =>
+              this.foundWord(run, rise, sizes, level, findex, 0, r0c, vh0c)
+            }
           >
             {secretObj[0][uc0]}
           </button>
@@ -376,7 +404,9 @@ class Building extends Component {
             id="squareMfound"
             codex={x}
             codey={y}
-            onClick={() => this.foundWord(run, rise, sizes, level, findex, 0)}
+            onClick={() =>
+              this.foundWord(run, rise, sizes, level, findex, 0, r0c, vh0c)
+            }
           >
             {secretObj[0][uc0]}
           </button>
