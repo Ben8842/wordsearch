@@ -52,16 +52,42 @@ class Building extends Component {
       return q;
     }
 
-    var objSol = {
-      firstSolution: charSplit(swords[0]),
-      secondSolution: charSplit(swords[1]),
-      thirdSolution: charSplit(swords[2]),
-      fourthSolution: charSplit(swords[3]),
-      fifthSolution: charSplit(swords[4]),
-    };
+    var objSol = [
+      charSplit(swords[0]),
+      charSplit(swords[1]),
+      charSplit(swords[2]),
+      charSplit(swords[3]),
+      charSplit(swords[4]),
+    ];
     var sizing = this.props.sizeValue;
-    var bench = Math.floor(Math.random() * 100);
-    var adjustment = [
+    console.log(objSol[0].length + "secretObj");
+    function randomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    var sizeArray = [];
+    var n;
+    for (n = 0; n < sizing; n++) {
+      sizeArray.push(n);
+    }
+
+    shuffle(sizeArray);
+
+    /*
+    var one = randomNumber(0, sizing);
+    var two = randomNumber(0, sizing);
+    if (one == two) {
+      two++;
+    }
+    var three = randomNumber(0, sizing);
+    var four = randomNumber(0, sizing);
+    var five = randomNumber(0, sizing);
+    if (three == one | three == two) {
+      var three = three + randomNumber(0, sizing);
+    }
+    var one = bench % sizing,
+    var two = 
+    var adjustmentY = [
       bench % sizing,
       (bench + 5) % sizing,
       (bench + 7) % sizing,
@@ -69,21 +95,20 @@ class Building extends Component {
       (bench + 14) % sizing,
     ];
     console.log(adjustment);
+*/
 
-    function randomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-    console.log(randomNumber(0, sizing - objSol.firstSolution.length));
-    var target = {
-      firstSolution: randomNumber(0, sizing - objSol.firstSolution.length),
-      secondSolution: randomNumber(0, sizing - objSol.secondSolution.length),
-      thirdSolution: randomNumber(0, sizing - objSol.thirdSolution.length),
-      fourthSolution: randomNumber(0, sizing - objSol.fourthSolution.length),
-      fifthSolution: randomNumber(0, sizing - objSol.fifthSolution.length),
-    };
-    console.log(target);
-    console.log(target.firstSolution);
+    var target = [
+      randomNumber(0, sizing - objSol[0].length),
+      randomNumber(0, sizing - objSol[1].length),
+      randomNumber(0, sizing - objSol[2].length),
+      randomNumber(0, sizing - objSol[3].length),
+      randomNumber(0, sizing - objSol[4].length),
+    ];
 
+    console.log(objSol);
+
+    console.log(sizeArray + "ADJ");
+    console.log(target + "ADJH");
     this.state = {
       showInfo: false,
       xCoor: null,
@@ -103,7 +128,7 @@ class Building extends Component {
       secretWords: swords,
       gridStatus: [],
       secretObj: objSol,
-      ADJ: adjustment,
+      ADJ: sizeArray,
       sizes: sizing,
       ADJH: target,
       wordFound: false,
@@ -289,13 +314,45 @@ class Building extends Component {
       }*/
     }
 
+    var v0 = ADJ[0] * sizes;
+    var h0 = ADJH[0];
+    var r0 = secretObj[0].length;
+    var r0c = v0 + h0 + r0;
+    var vh0c = v0 + h0;
+    var uc0 = superIndex - h0 - v0;
+
+    var v1 = ADJ[1] * sizes;
+    var h1 = ADJH[1];
+    var r1 = secretObj[1].length;
+    var r1c = v1 + h1 + r1;
+    var vh1c = v1 + h1;
+    var uc1 = superIndex - h1 - v1;
+
+    var v2 = ADJ[2] * sizes;
+    var h2 = ADJH[2];
+    var r2 = secretObj[2].length;
+    var r2c = v2 + h2 + r2;
+    var vh2c = v2 + h2;
+    var uc2 = superIndex - h2 - v2;
+
+    var v3 = ADJ[3] * sizes;
+    var h3 = ADJH[3];
+    var r3 = secretObj[3].length;
+    var r3c = v3 + h3 + r3;
+    var vh3c = v3 + h3;
+    var uc3 = superIndex - h3 - v3;
+
+    var v4 = ADJ[4] * sizes;
+    var h4 = ADJH[4];
+    var r4 = secretObj[4].length;
+    var r4c = v4 + h4 + r4;
+    var vh4c = v4 + h4;
+    var uc4 = superIndex - h4 - v4;
+
     if (level == 0) {
       var findex = (x * sizes + y) % 26;
 
-      if (
-        superIndex < secretObj.firstSolution.length + ADJH.firstSolution &&
-        superIndex >= ADJH.firstSolution
-      ) {
+      if (superIndex < r0c && superIndex >= vh0c) {
         return (
           <button
             id="squareM"
@@ -303,14 +360,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 0)}
           >
-            {secretObj.firstSolution[superIndex - ADJH.firstSolution]}
+            {secretObj[0][uc0]}
           </button>
         );
-      } else if (
-        superIndex <
-          secretObj.secondSolution.length + sizes + ADJH.secondSolution &&
-        superIndex >= sizes + ADJH.secondSolution
-      ) {
+      } else if (superIndex < r1c && superIndex >= vh1c) {
         return (
           <button
             id="squareMM"
@@ -318,16 +371,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 1)}
           >
-            {secretObj.secondSolution[superIndex - sizes - ADJH.secondSolution]}
+            {secretObj[1][uc1]}
           </button>
         );
-      } else if (
-        superIndex <
-          secretObj.thirdSolution.length +
-            ADJH.thirdSolution +
-            sizes * ADJ[0] &&
-        superIndex >= sizes * ADJ[0] + ADJH.thirdSolution
-      ) {
+      } else if (superIndex < r2c && superIndex >= vh2c) {
         return (
           <button
             id="squareMMM"
@@ -335,17 +382,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 2)}
           >
-            {
-              secretObj.thirdSolution[
-                superIndex - sizes * ADJ[0] - ADJH.thirdSolution
-              ]
-            }
+            {secretObj[2][uc2]}
           </button>
         );
-      } else if (
-        superIndex < secretObj.fourthSolution.length + sizes * ADJ[1] &&
-        superIndex >= sizes * ADJ[1]
-      ) {
+      } else if (superIndex < r3c && superIndex >= vh3c) {
         return (
           <button
             id="squareMMMM"
@@ -353,13 +393,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 3)}
           >
-            {secretObj.fourthSolution[superIndex - sizes * ADJ[1]]}
+            {secretObj[3][uc3]}
           </button>
         );
-      } else if (
-        superIndex < secretObj.fifthSolution.length + sizes * ADJ[2] &&
-        superIndex >= sizes * ADJ[2]
-      ) {
+      } else if (superIndex < r4c && superIndex >= vh4c) {
         return (
           <button
             id="squareMMMMM"
@@ -367,7 +404,7 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 4)}
           >
-            {secretObj.fifthSolution[superIndex - sizes * ADJ[2]]}
+            {secretObj[4][uc4]}
           </button>
         );
       } else
@@ -385,10 +422,7 @@ class Building extends Component {
       // this.incrementQ();
       var findex = (x * sizes + y) % 26;
 
-      if (
-        superIndex < secretObj.firstSolution.length + ADJH.firstSolution &&
-        superIndex >= ADJH.firstSolution
-      ) {
+      if (superIndex < r0c && superIndex >= vh0c) {
         return (
           <button
             id="squareMfound"
@@ -396,14 +430,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 0)}
           >
-            {secretObj.firstSolution[superIndex - ADJH.firstSolution]}
+            {secretObj[0][uc0]}
           </button>
         );
-      } else if (
-        superIndex <
-          secretObj.secondSolution.length + sizes + ADJH.secondSolution &&
-        superIndex >= sizes + ADJH.secondSolution
-      ) {
+      } else if (superIndex < r1c && superIndex >= vh1c) {
         return (
           <button
             id="squareMMfound"
@@ -411,16 +441,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 1)}
           >
-            {secretObj.secondSolution[superIndex - sizes - ADJH.secondSolution]}
+            {secretObj[1][uc1]}
           </button>
         );
-      } else if (
-        superIndex <
-          secretObj.thirdSolution.length +
-            ADJH.thirdSolution +
-            sizes * ADJ[0] &&
-        superIndex >= sizes * ADJ[0] + ADJH.thirdSolution
-      ) {
+      } else if (superIndex < r2c && superIndex >= vh2c) {
         return (
           <button
             id="squareMMMfound"
@@ -428,17 +452,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 2)}
           >
-            {
-              secretObj.thirdSolution[
-                superIndex - sizes * ADJ[0] - ADJH.thirdSolution
-              ]
-            }
+            {secretObj[2][uc2]}
           </button>
         );
-      } else if (
-        superIndex < secretObj.fourthSolution.length + sizes * ADJ[1] &&
-        superIndex >= sizes * ADJ[1]
-      ) {
+      } else if (superIndex < r3c && superIndex >= vh3c) {
         return (
           <button
             id="squareMMMMfound"
@@ -446,13 +463,10 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 3)}
           >
-            {secretObj.fourthSolution[superIndex - sizes * ADJ[1]]}
+            {secretObj[3][uc3]}
           </button>
         );
-      } else if (
-        superIndex < secretObj.fifthSolution.length + sizes * ADJ[2] &&
-        superIndex >= sizes * ADJ[2]
-      ) {
+      } else if (superIndex < r4c && superIndex >= vh4c) {
         return (
           <button
             id="squareMMMMMfound"
@@ -460,7 +474,7 @@ class Building extends Component {
             codey={y}
             onClick={() => this.foundWord(run, rise, sizes, level, findex, 4)}
           >
-            {secretObj.fifthSolution[superIndex - sizes * ADJ[2]]}
+            {secretObj[4][uc4]}
           </button>
         );
       } else
