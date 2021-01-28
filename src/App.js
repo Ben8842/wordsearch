@@ -38,9 +38,30 @@ class Building extends Component {
     }
 
     shuffle(alphArray);
+
     var randomWords = require("random-words");
 
     var swords = randomWords({ exactly: 5, maxLength: 7 });
+    console.log(swords);
+    function charSplit(stringy) {
+      var t;
+      var q = [];
+      for (t = 0; t < stringy.length; t++) {
+        q.push(stringy.charAt(t).toUpperCase());
+      }
+      return q;
+    }
+
+    var objSol = {
+      firstSolution: charSplit(swords[0]),
+      secondSolution: charSplit(swords[1]),
+      thirdSolution: charSplit(swords[2]),
+      fourthSolution: charSplit(swords[3]),
+      fifthSolution: charSplit(swords[4]),
+    };
+
+    console.log(objSol);
+    console.log(objSol.firstSolution.length);
 
     this.state = {
       showInfo: false,
@@ -60,6 +81,7 @@ class Building extends Component {
       alphaRand: alphArray,
       secretWords: swords,
       gridStatus: [],
+      secretObj: objSol,
     };
   }
 
@@ -178,19 +200,16 @@ class Building extends Component {
       conflict,
       alphaRand,
       secretWords,
+      secretObj,
     } = this.state;
     var run = x;
     var rise = y;
     var sizes = this.props.sizeValue;
     var level = 0;
     var superIndex = y * sizes + x;
-    var first = secretWords[0];
 
-    function shuffle(arry) {
-      arry.sort(() => Math.random() - 0.5);
-    }
+    var target = [0];
 
-    var losecondition = 0;
     var z;
     for (z = 0; z < choicesX.length; z++) {
       if (choicesX[z] == x && choicesY[z] == y) {
@@ -208,8 +227,7 @@ class Building extends Component {
     if (level == 0) {
       var findex = (x * sizes + y) % 26;
 
-      var solution = first.charAt(0).toUpperCase();
-      if (superIndex == 0) {
+      if (superIndex < secretObj.firstSolution.length) {
         return (
           <button
             id="square"
@@ -217,10 +235,66 @@ class Building extends Component {
             codey={y}
             onClick={() => this.showCode(run, rise, sizes, level, findex)}
           >
-            {solution}
+            {secretObj.firstSolution[superIndex]}
           </button>
         );
-      } else {
+      } else if (
+        superIndex < secretObj.secondSolution.length + sizes &&
+        superIndex >= sizes
+      ) {
+        return (
+          <button
+            id="square"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+          >
+            {secretObj.secondSolution[superIndex - sizes]}
+          </button>
+        );
+      } else if (
+        superIndex < secretObj.thirdSolution.length + sizes * 2 &&
+        superIndex >= sizes * 2
+      ) {
+        return (
+          <button
+            id="square"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+          >
+            {secretObj.thirdSolution[superIndex - sizes * 2]}
+          </button>
+        );
+      } else if (
+        superIndex < secretObj.fourthSolution.length + sizes * 3 &&
+        superIndex >= sizes * 3
+      ) {
+        return (
+          <button
+            id="square"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+          >
+            {secretObj.fourthSolution[superIndex - sizes * 3]}
+          </button>
+        );
+      } else if (
+        superIndex < secretObj.fifthSolution.length + sizes * 4 &&
+        superIndex >= sizes * 4
+      ) {
+        return (
+          <button
+            id="square"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+          >
+            {secretObj.fifthSolution[superIndex - sizes * 4]}
+          </button>
+        );
+      } else
         return (
           <button
             id="square"
@@ -231,7 +305,6 @@ class Building extends Component {
             {alphaRand[findex]}
           </button>
         );
-      }
     } else if (level == 1) {
       // this.incrementQ();
       const valueQ = 8 - this.state.numOfQueens;
@@ -243,7 +316,7 @@ class Building extends Component {
           codey={y}
           onClick={() => this.invalidChoiceQ(run, rise, sizes, level)}
         >
-          {alphaRand[findex]}
+          {superIndex}
         </button>
       );
     } /*else if (level == 2) {
@@ -442,7 +515,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 8,
+      count: 16,
     };
   }
   enterCount() {
