@@ -59,9 +59,30 @@ class Building extends Component {
       fourthSolution: charSplit(swords[3]),
       fifthSolution: charSplit(swords[4]),
     };
+    var sizing = this.props.sizeValue;
+    var bench = Math.floor(Math.random() * 100);
+    var adjustment = [
+      bench % sizing,
+      (bench + 5) % sizing,
+      (bench + 7) % sizing,
+      (bench + 11) % sizing,
+      (bench + 14) % sizing,
+    ];
+    console.log(adjustment);
 
-    console.log(objSol);
-    console.log(objSol.firstSolution.length);
+    function randomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+    console.log(randomNumber(0, sizing - objSol.firstSolution.length));
+    var target = {
+      firstSolution: randomNumber(0, sizing - objSol.firstSolution.length),
+      secondSolution: randomNumber(0, sizing - objSol.secondSolution.length),
+      thirdSolution: randomNumber(0, sizing - objSol.thirdSolution.length),
+      fourthSolution: randomNumber(0, sizing - objSol.fourthSolution.length),
+      fifthSolution: randomNumber(0, sizing - objSol.fifthSolution.length),
+    };
+    console.log(target);
+    console.log(target.firstSolution);
 
     this.state = {
       showInfo: false,
@@ -82,6 +103,10 @@ class Building extends Component {
       secretWords: swords,
       gridStatus: [],
       secretObj: objSol,
+      ADJ: adjustment,
+      sizes: sizing,
+      ADJH: target,
+      wordFound: false,
     };
   }
 
@@ -166,6 +191,13 @@ class Building extends Component {
     });
   }
 
+  foundWord() {
+    console.log("you found one!");
+    this.setState((state) => {
+      return { wordFound: true };
+    });
+  }
+
   invalidChoice() {
     this.setState((state) => {
       return { iChoice: true };
@@ -201,10 +233,13 @@ class Building extends Component {
       alphaRand,
       secretWords,
       secretObj,
+      ADJ,
+      sizes,
+      ADJH,
     } = this.state;
     var run = x;
     var rise = y;
-    var sizes = this.props.sizeValue;
+    //var sizes = this.props.sizeValue;
     var level = 0;
     var superIndex = y * sizes + x;
 
@@ -227,71 +262,82 @@ class Building extends Component {
     if (level == 0) {
       var findex = (x * sizes + y) % 26;
 
-      if (superIndex < secretObj.firstSolution.length) {
-        return (
-          <button
-            id="square"
-            codex={x}
-            codey={y}
-            onClick={() => this.showCode(run, rise, sizes, level, findex)}
-          >
-            {secretObj.firstSolution[superIndex]}
-          </button>
-        );
-      } else if (
-        superIndex < secretObj.secondSolution.length + sizes &&
-        superIndex >= sizes
+      if (
+        superIndex < secretObj.firstSolution.length + ADJH.firstSolution &&
+        superIndex >= ADJH.firstSolution
       ) {
         return (
           <button
-            id="square"
+            id="squareM"
             codex={x}
             codey={y}
-            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 0)}
           >
-            {secretObj.secondSolution[superIndex - sizes]}
+            {secretObj.firstSolution[superIndex - ADJH.firstSolution]}
           </button>
         );
       } else if (
-        superIndex < secretObj.thirdSolution.length + sizes * 2 &&
-        superIndex >= sizes * 2
+        superIndex <
+          secretObj.secondSolution.length + sizes + ADJH.secondSolution &&
+        superIndex >= sizes + ADJH.secondSolution
       ) {
         return (
           <button
-            id="square"
+            id="squareMM"
             codex={x}
             codey={y}
-            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 1)}
           >
-            {secretObj.thirdSolution[superIndex - sizes * 2]}
+            {secretObj.secondSolution[superIndex - sizes - ADJH.secondSolution]}
           </button>
         );
       } else if (
-        superIndex < secretObj.fourthSolution.length + sizes * 3 &&
-        superIndex >= sizes * 3
+        superIndex <
+          secretObj.thirdSolution.length +
+            ADJH.thirdSolution +
+            sizes * ADJ[0] &&
+        superIndex >= sizes * ADJ[0] + ADJH.thirdSolution
       ) {
         return (
           <button
-            id="square"
+            id="squareMMM"
             codex={x}
             codey={y}
-            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 2)}
           >
-            {secretObj.fourthSolution[superIndex - sizes * 3]}
+            {
+              secretObj.thirdSolution[
+                superIndex - sizes * ADJ[0] - ADJH.thirdSolution
+              ]
+            }
           </button>
         );
       } else if (
-        superIndex < secretObj.fifthSolution.length + sizes * 4 &&
-        superIndex >= sizes * 4
+        superIndex < secretObj.fourthSolution.length + sizes * ADJ[1] &&
+        superIndex >= sizes * ADJ[1]
       ) {
         return (
           <button
-            id="square"
+            id="squareMMMM"
             codex={x}
             codey={y}
-            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 3)}
           >
-            {secretObj.fifthSolution[superIndex - sizes * 4]}
+            {secretObj.fourthSolution[superIndex - sizes * ADJ[1]]}
+          </button>
+        );
+      } else if (
+        superIndex < secretObj.fifthSolution.length + sizes * ADJ[2] &&
+        superIndex >= sizes * ADJ[2]
+      ) {
+        return (
+          <button
+            id="squareMMMMM"
+            codex={x}
+            codey={y}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 4)}
+          >
+            {secretObj.fifthSolution[superIndex - sizes * ADJ[2]]}
           </button>
         );
       } else
@@ -300,7 +346,7 @@ class Building extends Component {
             id="square"
             codex={x}
             codey={y}
-            onClick={() => this.showCode(run, rise, sizes, level, findex)}
+            onClick={() => this.showCode(run, rise, sizes, level, findex, 5)}
           >
             {alphaRand[findex]}
           </button>

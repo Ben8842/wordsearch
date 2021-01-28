@@ -22,7 +22,7 @@
 }
 #info {
   margin: 50px;
-  padding: px;
+  padding: 0px;
   border-color: black;
   border: solid;
   font-size: 24px;
@@ -33,7 +33,77 @@
 
 #square {
   background-color: white;
-  color: blakc;
+  color: black;
+  background: white;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareM {
+  background-color: white;
+  color: black;
+  background: white;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMM {
+  background-color: white;
+  color: black;
+  background: white;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMM {
+  background-color: white;
+  color: black;
+  background: white;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMMM {
+  background-color: white;
+  color: black;
+  background: white;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMMMM {
+  background-color: white;
+  color: black;
   background: white;
   border: solid solid solid solid;
   font-size: 24px;
