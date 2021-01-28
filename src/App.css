@@ -48,7 +48,7 @@
 #squareM {
   background-color: white;
   color: black;
-  background: green;
+  background: white;
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -62,7 +62,7 @@
 #squareMM {
   background-color: white;
   color: black;
-  background: green;
+  background: white;
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -76,7 +76,7 @@
 #squareMMM {
   background-color: white;
   color: black;
-  background: lightblue;
+  background: white;
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -90,7 +90,7 @@
 #squareMMMM {
   background-color: white;
   color: black;
-  background: lightblue;
+  background: white;
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -104,7 +104,7 @@
 #squareMMMMM {
   background-color: white;
   color: black;
-  background: yellow;
+  background: white;
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
