@@ -209,25 +209,79 @@ class Building extends Component {
 
   foundWord(x, y, sizes, level, findex, num, rangeH, rangeL) {
     var { secretWords, foundH, choicesX, choicesY } = this.state;
-    this.setState((state) => {
-      const holderX = [...state.choicesX, x];
-      const holderY = [...state.choicesY, y];
+    if ((level == 0) | (level == 1)) {
+      const boxX = [];
+      const boxY = [];
+      var i = secretWords[num].length;
+      var u;
+      var s = sizes * y;
+      console.log(sizes * y + "sizes * y");
+      var t = rangeL - s;
+      console.log(rangeL + "rangeL");
+      console.log(rangeH + "rangeH");
+      for (u = 0; u < i; u++) {
+        boxX.push(t + u);
+        boxY.push(y);
+      }
+      console.log(boxX);
+      console.log(boxY);
+      this.setState((state) => {
+        const holderX = [
+          ...state.choicesX,
+          boxX[0],
+          boxX[1],
+          boxX[2],
+          boxX[3],
+          boxX[4],
+          boxX[5],
+          boxX[6],
+        ];
+        const holderY = [
+          ...state.choicesY,
+          boxY[0],
+          boxY[1],
+          boxY[2],
+          boxY[3],
+          boxY[4],
+          boxY[5],
+          boxY[6],
+        ];
 
-      const foundHold = [...state.foundH, secretWords[num]];
-      console.log(foundH);
-      return {
-        showInfo: true,
-        xCoor: x,
-        yCoor: y,
-        isChess: false,
-        choicesX: holderX,
-        choicesY: holderY,
-        iChoice: false,
-        iChoiceQ: false,
-        foundH: foundHold,
-      };
-    });
-    console.log(choicesX);
+        const foundHold = [...state.foundH, secretWords[num]];
+        console.log(foundH);
+        return {
+          showInfo: true,
+          xCoor: x,
+          yCoor: y,
+          isChess: false,
+          choicesX: holderX,
+          choicesY: holderY,
+          iChoice: false,
+          iChoiceQ: false,
+          foundH: foundHold,
+        };
+      });
+    } else {
+      this.setState((state) => {
+        const holderX = [...state.choicesX, x];
+        const holderY = [...state.choicesY, y];
+
+        const foundHold = [...state.foundH, secretWords[num]];
+        console.log(foundH);
+        return {
+          showInfo: true,
+          xCoor: x,
+          yCoor: y,
+          isChess: false,
+          choicesX: holderX,
+          choicesY: holderY,
+          iChoice: false,
+          iChoiceQ: false,
+          foundH: foundHold,
+        };
+      });
+      console.log(choicesX);
+    }
     /*var wide = secretWords[num].length;
     var c;
     var p;
@@ -345,7 +399,9 @@ class Building extends Component {
             id="squareMM"
             codex={x}
             codey={y}
-            onClick={() => this.foundWord(run, rise, sizes, level, findex, 1)}
+            onClick={() =>
+              this.foundWord(run, rise, sizes, level, findex, 1, r1c, vh1c)
+            }
           >
             {secretObj[1][uc1]}
           </button>
@@ -356,7 +412,9 @@ class Building extends Component {
             id="squareMMM"
             codex={x}
             codey={y}
-            onClick={() => this.foundWord(run, rise, sizes, level, findex, 2)}
+            onClick={() =>
+              this.foundWord(run, rise, sizes, level, findex, 2, r2c, vh2c)
+            }
           >
             {secretObj[2][uc2]}
           </button>
@@ -367,7 +425,9 @@ class Building extends Component {
             id="squareMMMM"
             codex={x}
             codey={y}
-            onClick={() => this.foundWord(run, rise, sizes, level, findex, 3)}
+            onClick={() =>
+              this.foundWord(run, rise, sizes, level, findex, 3, r3c, vh3c)
+            }
           >
             {secretObj[3][uc3]}
           </button>
@@ -378,7 +438,9 @@ class Building extends Component {
             id="squareMMMMM"
             codex={x}
             codey={y}
-            onClick={() => this.foundWord(run, rise, sizes, level, findex, 4)}
+            onClick={() =>
+              this.foundWord(run, rise, sizes, level, findex, 4, r4c, vh4c)
+            }
           >
             {secretObj[4][uc4]}
           </button>
