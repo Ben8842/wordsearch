@@ -113,15 +113,10 @@ class Building extends Component {
       showInfo: false,
       xCoor: null,
       yCoor: null,
-      isChess: false,
       size: 0,
-      chessCodeLetter: "",
-      chessCodeNumber: "",
       choicesX: [],
       choicesY: [],
-      numOfQueens: 8,
       conflict: false,
-      solved8: false,
       iChoice: false,
       iChoiceQ: false,
       alphaRand: alphArray,
@@ -217,23 +212,7 @@ class Building extends Component {
   }*/
 
   foundWord(x, y, sizes, level, findex, num) {
-    var {
-      showInfo,
-      xCoor,
-      yCoor,
-      isChess,
-      boardS,
-      chessCodeLetter,
-      chessCodeNumber,
-      choicesX,
-      choicesY,
-      numOfQueens,
-      solved8,
-      conflict,
-      alphaRand,
-      secretWords,
-      foundH,
-    } = this.state;
+    var { secretWords, foundH } = this.state;
     this.setState((state) => {
       const holderX = [...state.choicesX, x];
       const holderY = [...state.choicesY, y];
@@ -253,40 +232,11 @@ class Building extends Component {
     });
   }
 
-  invalidChoice() {
-    this.setState((state) => {
-      return { iChoice: true };
-    });
-  }
-
-  invalidChoiceQ() {
-    this.setState((state) => {
-      return { iChoiceQ: true };
-    });
-  }
-
-  incrementQ() {
-    this.setState((state) => {
-      return { numOfQueens: state.numOfQueens + 1 };
-    });
-  }
-
   renderSquare(x, y) {
     var {
-      showInfo,
-      xCoor,
-      yCoor,
-      isChess,
-      boardS,
-      chessCodeLetter,
-      chessCodeNumber,
       choicesX,
       choicesY,
-      numOfQueens,
-      solved8,
-      conflict,
       alphaRand,
-      secretWords,
       secretObj,
       ADJ,
       sizes,
@@ -297,9 +247,6 @@ class Building extends Component {
     //var sizes = this.props.sizeValue;
     var level = 0;
     var superIndex = y * sizes + x;
-
-    var target = [0];
-
     var z;
     for (z = 0; z < choicesX.length; z++) {
       if (choicesX[z] == x && choicesY[z] == y) {
@@ -314,6 +261,7 @@ class Building extends Component {
       }*/
     }
 
+    //random horizontal solutions
     var v0 = ADJ[0] * sizes;
     var h0 = ADJH[0];
     var r0 = secretObj[0].length;
@@ -517,10 +465,6 @@ class Building extends Component {
       showInfo,
       xCoor,
       yCoor,
-      isChess,
-      boardS,
-      chessCodeLetter,
-      chessCodeNumber,
       choicesX,
       choicesY,
       numOfQueens,
@@ -580,35 +524,6 @@ class Building extends Component {
       </div>
     );
 
-    const someDisplay = (
-      <div>
-        <ol>
-          {choicesX.map((value, index) => {
-            return (
-              <li key={index}>
-                ( {value} , {choicesY[index]} )
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-    );
-
-    const errorChoice = (
-      <span id="errorC">
-        ! You have chosen a location that conflicts with another Queen's path.
-        This choice is not allowed to solve this Queen puzzle. Please choose an
-        empty square. !
-      </span>
-    );
-
-    const errorChoiceQ = (
-      <span id="errorC">
-        ! You may not place a Queen on top of another Queen. This choice is not
-        allowed to solve this Queen puzzle. Please choose an empty square. !
-      </span>
-    );
-
     const displayLocation = (
       <div class="column">
         <p>
@@ -622,8 +537,6 @@ class Building extends Component {
           </ul>
         </p>
         <p>
-          <span>{iChoice ? errorChoice : null}</span>
-          <span>{iChoiceQ ? errorChoiceQ : null}</span>
           <span>{moreDisplay}</span>( {xCoor} , {yCoor} )
         </p>
       </div>
@@ -644,7 +557,7 @@ class Building extends Component {
       </div>
     );
 
-    const winchecker = <span>Words left = {numOfQueens}</span>;
+    const winchecker = <span>Number of words found = {foundH.length}</span>;
 
     const winpuzzle = (
       <span>
