@@ -115,6 +115,96 @@
   width: 45px;
 }
 
+#found {
+  background-color: green;
+  color: white;
+  background: green;
+}
+
+#squareMfound {
+  background-color: green;
+  color: white;
+  background: green;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMfound {
+  background-color: green;
+  color: white;
+  background: green;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMMfound {
+  background-color: green;
+  color: white;
+  background: green;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMMMfound {
+  background-color: green;
+  color: white;
+  background: green;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squareMMMMMfound {
+  background-color: green;
+  color: white;
+  background: green;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
+#squarered {
+  background-color: red;
+  color: black;
+  background: red;
+  border: solid solid solid solid;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 45px;
+  padding: 0;
+  text-align: center;
+  width: 45px;
+}
+
 #squareSelected {
   background-color: black;
   color: white;

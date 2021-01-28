@@ -107,6 +107,7 @@ class Building extends Component {
       sizes: sizing,
       ADJH: target,
       wordFound: false,
+      foundH: [],
     };
   }
 
@@ -132,7 +133,7 @@ class Building extends Component {
     });
   }
 
-  showCode(x, y, sizes, level, findex) {
+  showCode(x, y, sizes, level, findex, num) {
     var {
       showInfo,
       xCoor,
@@ -149,52 +150,81 @@ class Building extends Component {
       alphaRand,
     } = this.state;
     this.setState((state) => {
-      if (sizes == 8) {
-        var chessArray = ["a", "b", "c", "d", "e", "f", "g", "h"];
-        var chessX = chessArray[x];
-        var chessY = y + 1;
-        var letterChoices = alphaRand[findex];
-        const holderX = [...state.choicesX, x];
-        const holderY = [...state.choicesY, y];
-        const holderG = [...state.gridStatus, letterChoices];
-        var newNum = 8 - state.choicesX.length - 1;
+      const holderX = [...state.choicesX, x];
+      const holderY = [...state.choicesY, y];
 
-        return {
-          showInfo: true,
-          xCoor: x,
-          yCoor: y,
-          isChess: true,
-          chessCodeLetter: chessX,
-          chessCodeNumber: chessY,
-          choicesX: holderX,
-          choicesY: holderY,
-          numOfQueens: newNum,
-          iChoice: false,
-          iChoiceQ: false,
-          gridStatus: holderG,
-        };
-      } else {
-        const holderX = [...state.choicesX, x];
-        const holderY = [...state.choicesY, y];
-
-        return {
-          showInfo: true,
-          xCoor: x,
-          yCoor: y,
-          isChess: false,
-          choicesX: holderX,
-          choicesY: holderY,
-          iChoice: false,
-          iChoiceQ: false,
-        };
-      }
+      return {
+        showInfo: true,
+        xCoor: x,
+        yCoor: y,
+        isChess: false,
+        choicesX: holderX,
+        choicesY: holderY,
+        iChoice: false,
+        iChoiceQ: false,
+      };
     });
   }
 
-  foundWord() {
+  /*foundWord(x, y, size, level, findex, num) {
     console.log("you found one!");
+    var {
+      showInfo,
+      xCoor,
+      yCoor,
+      isChess,
+      boardS,
+      chessCodeLetter,
+      chessCodeNumber,
+      choicesX,
+      choicesY,
+      numOfQueens,
+      solved8,
+      conflict,
+      alphaRand,
+      wordFound,
+    } = this.state;
+    const holderX = [...state.choicesX, x];
+    const holderY = [...state.choicesY, y];
     this.setState((state) => {
-      return { wordFound: true };
+      return { wordFound: true, choicesX: holderX, choicesY: holderY };
+    });
+  }*/
+
+  foundWord(x, y, sizes, level, findex, num) {
+    var {
+      showInfo,
+      xCoor,
+      yCoor,
+      isChess,
+      boardS,
+      chessCodeLetter,
+      chessCodeNumber,
+      choicesX,
+      choicesY,
+      numOfQueens,
+      solved8,
+      conflict,
+      alphaRand,
+      secretWords,
+      foundH,
+    } = this.state;
+    this.setState((state) => {
+      const holderX = [...state.choicesX, x];
+      const holderY = [...state.choicesY, y];
+      const foundHold = [...state.foundH, secretWords[num]];
+      console.log(foundH);
+      return {
+        showInfo: true,
+        xCoor: x,
+        yCoor: y,
+        isChess: false,
+        choicesX: holderX,
+        choicesY: holderY,
+        iChoice: false,
+        iChoiceQ: false,
+        foundH: foundHold,
+      };
     });
   }
 
@@ -353,19 +383,97 @@ class Building extends Component {
         );
     } else if (level == 1) {
       // this.incrementQ();
-      const valueQ = 8 - this.state.numOfQueens;
       var findex = (x * sizes + y) % 26;
-      return (
-        <button
-          id="squareSelected"
-          codex={x}
-          codey={y}
-          onClick={() => this.invalidChoiceQ(run, rise, sizes, level)}
-        >
-          {superIndex}
-        </button>
-      );
-    } /*else if (level == 2) {
+
+      if (
+        superIndex < secretObj.firstSolution.length + ADJH.firstSolution &&
+        superIndex >= ADJH.firstSolution
+      ) {
+        return (
+          <button
+            id="squareMfound"
+            codex={x}
+            codey={y}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 0)}
+          >
+            {secretObj.firstSolution[superIndex - ADJH.firstSolution]}
+          </button>
+        );
+      } else if (
+        superIndex <
+          secretObj.secondSolution.length + sizes + ADJH.secondSolution &&
+        superIndex >= sizes + ADJH.secondSolution
+      ) {
+        return (
+          <button
+            id="squareMMfound"
+            codex={x}
+            codey={y}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 1)}
+          >
+            {secretObj.secondSolution[superIndex - sizes - ADJH.secondSolution]}
+          </button>
+        );
+      } else if (
+        superIndex <
+          secretObj.thirdSolution.length +
+            ADJH.thirdSolution +
+            sizes * ADJ[0] &&
+        superIndex >= sizes * ADJ[0] + ADJH.thirdSolution
+      ) {
+        return (
+          <button
+            id="squareMMMfound"
+            codex={x}
+            codey={y}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 2)}
+          >
+            {
+              secretObj.thirdSolution[
+                superIndex - sizes * ADJ[0] - ADJH.thirdSolution
+              ]
+            }
+          </button>
+        );
+      } else if (
+        superIndex < secretObj.fourthSolution.length + sizes * ADJ[1] &&
+        superIndex >= sizes * ADJ[1]
+      ) {
+        return (
+          <button
+            id="squareMMMMfound"
+            codex={x}
+            codey={y}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 3)}
+          >
+            {secretObj.fourthSolution[superIndex - sizes * ADJ[1]]}
+          </button>
+        );
+      } else if (
+        superIndex < secretObj.fifthSolution.length + sizes * ADJ[2] &&
+        superIndex >= sizes * ADJ[2]
+      ) {
+        return (
+          <button
+            id="squareMMMMMfound"
+            codex={x}
+            codey={y}
+            onClick={() => this.foundWord(run, rise, sizes, level, findex, 4)}
+          >
+            {secretObj.fifthSolution[superIndex - sizes * ADJ[2]]}
+          </button>
+        );
+      } else
+        return (
+          <button
+            id="squarered"
+            codex={x}
+            codey={y}
+            onClick={() => this.showCode(run, rise, sizes, level, findex, 5)}
+          >
+            {alphaRand[findex]}
+          </button>
+        ); /*else if (level == 2) {
       return (
         <button
           id="squarePath"
@@ -388,8 +496,8 @@ class Building extends Component {
         </button>
       );
     }*/
+    }
   }
-
   render() {
     var {
       showInfo,
@@ -406,7 +514,9 @@ class Building extends Component {
       iChoiceQ,
       secretWords,
       gridStatus,
+      foundH,
     } = this.state;
+    console.log(foundH);
     const boardA = this.props.sizeValue;
 
     const elementS = [];
@@ -435,13 +545,15 @@ class Building extends Component {
 
     const moreDisplay = (
       <div>
-        <ul>
-          <li>{secretWords[0]}</li>
-          <li>{secretWords[1]}</li>
-          <li>{secretWords[2]}</li>
-          <li>{secretWords[3]}</li>
-          <li>{secretWords[4]}</li>
-        </ul>
+        <ol>
+          {foundH.map((value, index) => {
+            return (
+              <li key={index} id="found">
+                {value}
+              </li>
+            );
+          })}
+        </ol>
         <ol>
           {choicesX.map((value, index) => {
             return (
@@ -486,10 +598,19 @@ class Building extends Component {
     const displayLocation = (
       <div class="column">
         <p>
+          Search for Words
+          <ul>
+            <li>{secretWords[0]}</li>
+            <li>{secretWords[1]}</li>
+            <li>{secretWords[2]}</li>
+            <li>{secretWords[3]}</li>
+            <li>{secretWords[4]}</li>
+          </ul>
+        </p>
+        <p>
           <span>{iChoice ? errorChoice : null}</span>
           <span>{iChoiceQ ? errorChoiceQ : null}</span>
-          <span>{isChess ? moreDisplay : someDisplay}</span>( {xCoor} , {yCoor}{" "}
-          )
+          <span>{moreDisplay}</span>( {xCoor} , {yCoor} )
         </p>
       </div>
     );
