@@ -46,9 +46,9 @@
 }
 
 #squareM {
-  background-color: white;
-  color: black;
-  background: white;
+  background-color: black;
+  color: red;
+
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -60,9 +60,9 @@
 }
 
 #squareMM {
-  background-color: white;
-  color: black;
-  background: white;
+  background-color: black;
+  color: red;
+
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -74,9 +74,9 @@
 }
 
 #squareMMM {
-  background-color: white;
-  color: black;
-  background: white;
+  background-color: black;
+  color: red;
+
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -88,9 +88,9 @@
 }
 
 #squareMMMM {
-  background-color: white;
-  color: black;
-  background: white;
+  background-color: black;
+  color: red;
+
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -102,9 +102,9 @@
 }
 
 #squareMMMMM {
-  background-color: white;
-  color: black;
-  background: white;
+  background-color: black;
+  color: red;
+
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;
@@ -114,17 +114,27 @@
   text-align: center;
   width: 45px;
 }
-
-#found {
-  background-color: green;
+#worddiscover {
   color: white;
-  background: green;
+  background-color: green;
+  border-color: green;
+  border: solid;
+  border-width: 25px;
+  font-size: 20px;
+  border-radius: 10px;
+  display: inline-block;
+  font-weight: bold;
+  border: 4px solid #008cba;
+}
+#found {
+  background-color: white;
+  color: red;
 }
 
 #squareMfound {
   background-color: green;
   color: white;
-  background: green;
+
   border: solid solid solid solid;
   font-size: 24px;
   font-weight: bold;

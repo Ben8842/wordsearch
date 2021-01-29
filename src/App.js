@@ -42,6 +42,7 @@ class Building extends Component {
     var randomWords = require("random-words");
 
     var swords = randomWords({ exactly: 5, maxLength: 7 });
+    var vwords = randomWords({ exactly: 5, maxLength: 7 });
 
     function charSplit(stringy) {
       var t;
@@ -59,6 +60,15 @@ class Building extends Component {
       charSplit(swords[3]),
       charSplit(swords[4]),
     ];
+
+    var objVSol = [
+      charSplit(vwords[0]),
+      charSplit(vwords[1]),
+      charSplit(vwords[2]),
+      charSplit(vwords[3]),
+      charSplit(vwords[4]),
+    ];
+
     var sizing = this.props.sizeValue;
 
     function randomNumber(min, max) {
@@ -68,34 +78,22 @@ class Building extends Component {
     var sizeArray = [];
     var n;
     for (n = 0; n < sizing; n++) {
-      sizeArray.push(n);
+      if (n < 4) {
+        sizeArray.push(n);
+      } else if (n > 11) {
+        sizeArray.push(n);
+      }
     }
 
     shuffle(sizeArray);
 
-    /*
-    var one = randomNumber(0, sizing);
-    var two = randomNumber(0, sizing);
-    if (one == two) {
-      two++;
+    var vcalcH = [];
+
+    var d;
+    for (d = 0; d < sizing; d++) {
+      vcalcH.push(d);
     }
-    var three = randomNumber(0, sizing);
-    var four = randomNumber(0, sizing);
-    var five = randomNumber(0, sizing);
-    if (three == one | three == two) {
-      var three = three + randomNumber(0, sizing);
-    }
-    var one = bench % sizing,
-    var two = 
-    var adjustmentY = [
-      bench % sizing,
-      (bench + 5) % sizing,
-      (bench + 7) % sizing,
-      (bench + 11) % sizing,
-      (bench + 14) % sizing,
-    ];
-    console.log(adjustment);
-*/
+    shuffle(vcalcH);
 
     var target = [
       randomNumber(0, sizing - objSol[0].length),
@@ -104,6 +102,15 @@ class Building extends Component {
       randomNumber(0, sizing - objSol[3].length),
       randomNumber(0, sizing - objSol[4].length),
     ];
+
+    var vcalc = [
+      randomNumber(4 + objVSol[0].length, 11),
+      randomNumber(4 + objVSol[1].length, 11),
+      randomNumber(4 + objVSol[2].length, 11),
+      randomNumber(4 + objVSol[3].length, 11),
+      randomNumber(4 + objVSol[4].length, 11),
+    ];
+    console.log(vcalc);
 
     this.state = {
       showInfo: false,
@@ -117,11 +124,17 @@ class Building extends Component {
       iChoiceQ: false,
       alphaRand: alphArray,
       secretWords: swords,
+      secretVords: vwords,
       gridStatus: [],
       secretObj: objSol,
+      secretVObj: objVSol,
       ADJ: sizeArray,
+      //this is the 'random' adjustment for x coordinate for horizontal word
       sizes: sizing,
       ADJH: target,
+      //this is the 'random' adjustment for y coordinate for horizontal word
+      VADJ: vcalc,
+      VADJH: vcalcH,
       wordFound: false,
       foundH: [],
     };
@@ -318,9 +331,12 @@ class Building extends Component {
       choicesY,
       alphaRand,
       secretObj,
+      secretVObj,
+      VADJ,
       ADJ,
       sizes,
       ADJH,
+      VADJH,
     } = this.state;
     var run = x;
     var rise = y;
@@ -377,8 +393,68 @@ class Building extends Component {
     var vh4c = v4 + h4;
     var uc4 = superIndex - h4 - v4;
 
+    //VERTICAL WORD ADJUSTMENT CALCULATIONS BELOW HERE
+
+    var v5 = VADJ[0] * sizes;
+    var h5 = VADJH[0];
+    var r5 = secretVObj[0].length;
+    var r5c = v5 + h5 + r5;
+    var vh5c = v5 + h5;
+    var uc5 = superIndex - h5 - v5;
+    var prize = z * sizes;
+    var prizes = vh5c - prize;
+    console.log(h5);
+
+    var v6 = VADJ[1] * sizes;
+    var h6 = VADJH[1];
+    var r6 = secretVObj[1].length;
+    var r6c = v6 + h6 + r6;
+    var vh6c = v6 + h6;
+    var uc6 = superIndex - h6 - v6;
+
+    var v7 = VADJ[2] * sizes;
+    var h7 = VADJH[2];
+    var r7 = secretVObj[2].length;
+    var r7c = v7 + h7 + r7;
+    var vh7c = v7 + h7;
+    var uc7 = superIndex - h7 - v7;
+
+    var v8 = VADJ[3] * sizes;
+    var h8 = VADJH[3];
+    var r8 = secretVObj[3].length;
+    var r8c = v8 + h8 + r8;
+    var vh8c = v8 + h8;
+    var uc8 = superIndex - h8 - v8;
+
+    var v9 = VADJ[4] * sizes;
+    var h9 = VADJH[4];
+    var r9 = secretVObj[4].length;
+    var r9c = v9 + h9 + r9;
+    var vh9c = v9 + h9;
+    var uc9 = superIndex - h9 - v9;
+
     if (level == 0) {
       var findex = (x * sizes + y) % 26;
+      var z;
+      for (z = 0; z < secretVObj[0].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh5c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareM"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWord(run, rise, sizes, level, findex, 5, r5c, vh5c)
+              }
+            >
+              {secretVObj[0][z]}
+            </button>
+          );
+        }
+      }
 
       if (superIndex < r0c && superIndex >= vh0c) {
         return (
@@ -563,6 +639,7 @@ class Building extends Component {
       iChoice,
       iChoiceQ,
       secretWords,
+      secretVords,
       gridStatus,
       foundH,
     } = this.state;
@@ -599,7 +676,7 @@ class Building extends Component {
           {foundH.map((value, index) => {
             return (
               <li key={index} id="found">
-                {value}
+                <button id="worddiscover">{value}</button>
               </li>
             );
           })}
@@ -626,6 +703,11 @@ class Building extends Component {
             <li>{secretWords[2]}</li>
             <li>{secretWords[3]}</li>
             <li>{secretWords[4]}</li>
+            <li>{secretVords[0]}</li>
+            <li>{secretVords[1]}</li>
+            <li>{secretVords[2]}</li>
+            <li>{secretVords[3]}</li>
+            <li>{secretVords[4]}</li>
           </ul>
         </p>
         <p>
@@ -644,6 +726,11 @@ class Building extends Component {
             <li>{secretWords[2]}</li>
             <li>{secretWords[3]}</li>
             <li>{secretWords[4]}</li>
+            <li>{secretVords[0]}</li>
+            <li>{secretVords[1]}</li>
+            <li>{secretVords[2]}</li>
+            <li>{secretVords[3]}</li>
+            <li>{secretVords[4]}</li>
           </ul>
         </p>
       </div>
