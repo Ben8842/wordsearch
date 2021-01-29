@@ -137,6 +137,7 @@ class Building extends Component {
       VADJH: vcalcH,
       wordFound: false,
       foundH: [],
+      foundHV: [],
     };
   }
 
@@ -325,6 +326,90 @@ class Building extends Component {
     }*/
   }
 
+  foundWordV(x, y, sizes, level, findex, num, leveldown, start) {
+    var {
+      secretWords,
+      secretVords,
+      foundH,
+      foundHV,
+      choicesX,
+      choicesY,
+    } = this.state;
+    if ((level == 0) | (level == 1)) {
+      const boxX = [];
+      const boxY = [];
+      var i = secretVords[num].length;
+      var u;
+      var s = sizes * y;
+      // console.log(sizes * y + "sizes * y");
+      //var t = rangeL - s;
+      var realstart = Math.floor(start / sizes);
+      console.log(realstart);
+      for (u = 0; u < i; u++) {
+        boxX.push(x);
+        boxY.push(realstart - u);
+      }
+      console.log(boxX);
+      console.log(boxY);
+      this.setState((state) => {
+        const holderX = [
+          ...state.choicesX,
+          boxX[0],
+          boxX[1],
+          boxX[2],
+          boxX[3],
+          boxX[4],
+          boxX[5],
+          boxX[6],
+        ];
+        const holderY = [
+          ...state.choicesY,
+          boxY[0],
+          boxY[1],
+          boxY[2],
+          boxY[3],
+          boxY[4],
+          boxY[5],
+          boxY[6],
+        ];
+
+        const foundHoldV = [...state.foundHV, secretVords[num]];
+        console.log(foundHoldV);
+        return {
+          showInfo: true,
+          xCoor: x,
+          yCoor: y,
+          isChess: false,
+          choicesX: holderX,
+          choicesY: holderY,
+          iChoice: false,
+          iChoiceQ: false,
+          foundHV: foundHoldV,
+        };
+      });
+    } else {
+      this.setState((state) => {
+        const holderX = [...state.choicesX, x];
+        const holderY = [...state.choicesY, y];
+
+        const foundHold = [...state.foundH, secretWords[num]];
+        console.log(foundH);
+        return {
+          showInfo: true,
+          xCoor: x,
+          yCoor: y,
+          isChess: false,
+          choicesX: holderX,
+          choicesY: holderY,
+          iChoice: false,
+          iChoiceQ: false,
+          foundH: foundHold,
+        };
+      });
+      console.log(choicesX);
+    }
+  }
+
   renderSquare(x, y) {
     var {
       choicesX,
@@ -447,10 +532,89 @@ class Building extends Component {
               codex={x}
               codey={y}
               onClick={() =>
-                this.foundWord(run, rise, sizes, level, findex, 5, r5c, vh5c)
+                this.foundWordV(run, rise, sizes, level, findex, 0, z, vh5c)
               }
             >
               {secretVObj[0][z]}
+            </button>
+          );
+        }
+      }
+      for (z = 0; z < secretVObj[1].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh6c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareM"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 1, z, vh6c)
+              }
+            >
+              {secretVObj[1][z]}
+            </button>
+          );
+        }
+      }
+
+      for (z = 0; z < secretVObj[2].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh7c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareM"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 2, z, vh7c)
+              }
+            >
+              {secretVObj[2][z]}
+            </button>
+          );
+        }
+      }
+
+      for (z = 0; z < secretVObj[3].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh8c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareM"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 3, z, vh8c)
+              }
+            >
+              {secretVObj[3][z]}
+            </button>
+          );
+        }
+      }
+
+      for (z = 0; z < secretVObj[4].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh9c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareM"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 4, z, vh9c)
+              }
+            >
+              {secretVObj[4][z]}
             </button>
           );
         }
@@ -533,8 +697,106 @@ class Building extends Component {
           </button>
         );
     } else if (level == 1) {
-      // this.incrementQ();
       var findex = (x * sizes + y) % 26;
+      var z;
+      for (z = 0; z < secretVObj[0].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh5c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareMfound"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 0, z, vh5c)
+              }
+            >
+              {secretVObj[0][z]}
+            </button>
+          );
+        }
+      }
+      for (z = 0; z < secretVObj[1].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh6c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareMMfound"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 1, z, vh6c)
+              }
+            >
+              {secretVObj[1][z]}
+            </button>
+          );
+        }
+      }
+
+      for (z = 0; z < secretVObj[2].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh7c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareMMMfound"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 2, z, vh7c)
+              }
+            >
+              {secretVObj[2][z]}
+            </button>
+          );
+        }
+      }
+
+      for (z = 0; z < secretVObj[3].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh8c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareMMMMfound"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 3, z, vh8c)
+              }
+            >
+              {secretVObj[3][z]}
+            </button>
+          );
+        }
+      }
+
+      for (z = 0; z < secretVObj[4].length; z++) {
+        var prize = z * sizes;
+        var prizes = vh9c - prize;
+
+        if (superIndex == prizes) {
+          return (
+            <button
+              id="squareMMMMMfound"
+              codex={x}
+              codey={y}
+              onClick={() =>
+                this.foundWordV(run, rise, sizes, level, findex, 4, z, vh9c)
+              }
+            >
+              {secretVObj[4][z]}
+            </button>
+          );
+        }
+      }
 
       if (superIndex < r0c && superIndex >= vh0c) {
         return (
@@ -543,7 +805,7 @@ class Building extends Component {
             codex={x}
             codey={y}
             onClick={() =>
-              this.foundWord(run, rise, sizes, level, findex, 0, r0c, vh0c)
+              this.foundWordV(run, rise, sizes, level, findex, 0, r0c, vh0c)
             }
           >
             {secretObj[0][uc0]}
