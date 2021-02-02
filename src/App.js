@@ -43,6 +43,7 @@ class Building extends Component {
 
     var swords = randomWords({ exactly: 5, maxLength: 7 });
     var vwords = randomWords({ exactly: 5, maxLength: 7 });
+    console.log(swords);
 
     function charSplit(stringy) {
       var t;
@@ -110,7 +111,6 @@ class Building extends Component {
       randomNumber(4 + objVSol[3].length, 11),
       randomNumber(4 + objVSol[4].length, 11),
     ];
-    console.log(vcalc);
 
     this.state = {
       showInfo: false,
@@ -142,25 +142,142 @@ class Building extends Component {
   }
 
   resethome() {
-    this.setState((state) => {
+    var alphArray = [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+      "U",
+      "V",
+      "W",
+      "X",
+      "Y",
+      "Z",
+    ];
+    function shuffle(arry) {
+      arry.sort(() => Math.random() - 0.5);
+    }
+
+    shuffle(alphArray);
+
+    var randomWords = require("random-words");
+
+    var swords = randomWords({ exactly: 5, maxLength: 7 });
+    var vwords = randomWords({ exactly: 5, maxLength: 7 });
+    console.log(swords);
+
+    function charSplit(stringy) {
+      var t;
+      var q = [];
+      for (t = 0; t < stringy.length; t++) {
+        q.push(stringy.charAt(t).toUpperCase());
+      }
+      return q;
+    }
+
+    var objSol = [
+      charSplit(swords[0]),
+      charSplit(swords[1]),
+      charSplit(swords[2]),
+      charSplit(swords[3]),
+      charSplit(swords[4]),
+    ];
+
+    var objVSol = [
+      charSplit(vwords[0]),
+      charSplit(vwords[1]),
+      charSplit(vwords[2]),
+      charSplit(vwords[3]),
+      charSplit(vwords[4]),
+    ];
+
+    var sizing = this.props.sizeValue;
+
+    function randomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    var sizeArray = [];
+    var n;
+    for (n = 0; n < sizing; n++) {
+      if (n < 4) {
+        sizeArray.push(n);
+      } else if (n > 11) {
+        sizeArray.push(n);
+      }
+    }
+
+    shuffle(sizeArray);
+
+    var vcalcH = [];
+
+    var d;
+    for (d = 0; d < sizing; d++) {
+      vcalcH.push(d);
+    }
+    shuffle(vcalcH);
+
+    var target = [
+      randomNumber(0, sizing - objSol[0].length),
+      randomNumber(0, sizing - objSol[1].length),
+      randomNumber(0, sizing - objSol[2].length),
+      randomNumber(0, sizing - objSol[3].length),
+      randomNumber(0, sizing - objSol[4].length),
+    ];
+
+    var vcalc = [
+      randomNumber(4 + objVSol[0].length, 11),
+      randomNumber(4 + objVSol[1].length, 11),
+      randomNumber(4 + objVSol[2].length, 11),
+      randomNumber(4 + objVSol[3].length, 11),
+      randomNumber(4 + objVSol[4].length, 11),
+    ];
+
+    this.setState = (state) => {
       return {
         showInfo: false,
         xCoor: null,
         yCoor: null,
-        isChess: false,
-        boardS: 0,
-        chessCodeLetter: "",
-        chessCodeNumber: "",
+        size: 0,
         choicesX: [],
         choicesY: [],
-        numOfQueens: 0,
         conflict: false,
-        solved8: false,
-        gridStatus: [],
         iChoice: false,
         iChoiceQ: false,
+        alphaRand: alphArray,
+        secretWords: swords,
+        secretVords: vwords,
+        gridStatus: [],
+        secretObj: objSol,
+        secretVObj: objVSol,
+        ADJ: sizeArray,
+        //this is the 'random' adjustment for x coordinate for horizontal word
+        sizes: sizing,
+        ADJH: target,
+        //this is the 'random' adjustment for y coordinate for horizontal word
+        VADJ: vcalc,
+        VADJH: vcalcH,
+        wordFound: false,
+        foundH: [],
+        foundHV: [],
       };
-    });
+    };
   }
 
   showCode(x, y, sizes, level, findex, num) {
@@ -229,16 +346,14 @@ class Building extends Component {
       var i = secretWords[num].length;
       var u;
       var s = sizes * y;
-      console.log(sizes * y + "sizes * y");
+
       var t = rangeL - s;
-      console.log(rangeL + "rangeL");
-      console.log(rangeH + "rangeH");
+
       for (u = 0; u < i; u++) {
         boxX.push(t + u);
         boxY.push(y);
       }
-      console.log(boxX);
-      console.log(boxY);
+
       this.setState((state) => {
         const holderX = [
           ...state.choicesX,
@@ -262,7 +377,7 @@ class Building extends Component {
         ];
 
         const foundHold = [...state.foundH, secretWords[num]];
-        console.log(foundH);
+
         return {
           showInfo: true,
           xCoor: x,
@@ -281,7 +396,7 @@ class Building extends Component {
         const holderY = [...state.choicesY, y];
 
         const foundHold = [...state.foundH, secretWords[num]];
-        console.log(foundH);
+
         return {
           showInfo: true,
           xCoor: x,
@@ -294,7 +409,6 @@ class Building extends Component {
           foundH: foundHold,
         };
       });
-      console.log(choicesX);
     }
     /*var wide = secretWords[num].length;
     var c;
@@ -344,13 +458,12 @@ class Building extends Component {
       // console.log(sizes * y + "sizes * y");
       //var t = rangeL - s;
       var realstart = Math.floor(start / sizes);
-      console.log(realstart);
+
       for (u = 0; u < i; u++) {
         boxX.push(x);
         boxY.push(realstart - u);
       }
-      console.log(boxX);
-      console.log(boxY);
+
       this.setState((state) => {
         const holderX = [
           ...state.choicesX,
@@ -373,27 +486,8 @@ class Building extends Component {
           boxY[6],
         ];
 
-        const foundHoldV = [...state.foundHV, secretVords[num]];
-        console.log(foundHoldV);
-        return {
-          showInfo: true,
-          xCoor: x,
-          yCoor: y,
-          isChess: false,
-          choicesX: holderX,
-          choicesY: holderY,
-          iChoice: false,
-          iChoiceQ: false,
-          foundHV: foundHoldV,
-        };
-      });
-    } else {
-      this.setState((state) => {
-        const holderX = [...state.choicesX, x];
-        const holderY = [...state.choicesY, y];
+        const foundHold = [...state.foundH, secretVords[num]];
 
-        const foundHold = [...state.foundH, secretWords[num]];
-        console.log(foundH);
         return {
           showInfo: true,
           xCoor: x,
@@ -406,7 +500,25 @@ class Building extends Component {
           foundH: foundHold,
         };
       });
-      console.log(choicesX);
+    } else {
+      this.setState((state) => {
+        const holderX = [...state.choicesX, x];
+        const holderY = [...state.choicesY, y];
+
+        const foundHold = [...state.foundH, secretWords[num]];
+
+        return {
+          showInfo: true,
+          xCoor: x,
+          yCoor: y,
+          isChess: false,
+          choicesX: holderX,
+          choicesY: holderY,
+          iChoice: false,
+          iChoiceQ: false,
+          foundH: foundHold,
+        };
+      });
     }
   }
 
@@ -488,7 +600,6 @@ class Building extends Component {
     var uc5 = superIndex - h5 - v5;
     var prize = z * sizes;
     var prizes = vh5c - prize;
-    console.log(h5);
 
     var v6 = VADJ[1] * sizes;
     var h6 = VADJH[1];
@@ -905,7 +1016,7 @@ class Building extends Component {
       gridStatus,
       foundH,
     } = this.state;
-    console.log(foundH);
+
     const boardA = this.props.sizeValue;
 
     const elementS = [];
@@ -957,21 +1068,7 @@ class Building extends Component {
 
     const displayLocation = (
       <div class="column">
-        <p>
-          Search for Words
-          <ul>
-            <li>{secretWords[0]}</li>
-            <li>{secretWords[1]}</li>
-            <li>{secretWords[2]}</li>
-            <li>{secretWords[3]}</li>
-            <li>{secretWords[4]}</li>
-            <li>{secretVords[0]}</li>
-            <li>{secretVords[1]}</li>
-            <li>{secretVords[2]}</li>
-            <li>{secretVords[3]}</li>
-            <li>{secretVords[4]}</li>
-          </ul>
-        </p>
+        <p>Search for Ten Words</p>
         <p>
           <span>{moreDisplay}</span>( {xCoor} , {yCoor} )
         </p>
@@ -980,21 +1077,7 @@ class Building extends Component {
 
     const noneDisplay = (
       <div class="column">
-        <p>
-          Search for Words
-          <ul>
-            <li>{secretWords[0]}</li>
-            <li>{secretWords[1]}</li>
-            <li>{secretWords[2]}</li>
-            <li>{secretWords[3]}</li>
-            <li>{secretWords[4]}</li>
-            <li>{secretVords[0]}</li>
-            <li>{secretVords[1]}</li>
-            <li>{secretVords[2]}</li>
-            <li>{secretVords[3]}</li>
-            <li>{secretVords[4]}</li>
-          </ul>
-        </p>
+        <p>Search for Ten Words</p>
       </div>
     );
 
@@ -1002,8 +1085,12 @@ class Building extends Component {
 
     const winpuzzle = (
       <span>
-        YOU WIN THE PUZZLE! Try Again!{" "}
-        <button type="button" class="button" onClick={() => this.resethome()}>
+        YOU WIN THE PUZZLE! Try Again!
+        <button
+          type="button"
+          class="button"
+          onClick={() => window.location.reload(false)}
+        >
           RESET Your Puzzle
         </button>
       </span>
@@ -1012,27 +1099,50 @@ class Building extends Component {
     const losepuzzle = (
       <span>
         YOU LOSE THE PUZZLE! Please Try Again.
-        <button type="button" class="button" onClick={() => this.resethome()}>
+        <button
+          type="button"
+          class="button"
+          onClick={() => window.location.reload(false)}
+        >
           RESET Your Puzzle
         </button>
       </span>
     );
 
+    const celebrate = (
+      <div>
+        <div>YOU WIN THE PUZZLE ! ! !</div>
+        <div>Try Again!</div>
+        <button
+          type="button"
+          class="button"
+          onClick={() => window.location.reload(false)}
+        >
+          Click Here to Generate a New Puzzle
+        </button>
+      </div>
+    );
+
     const gridDisplay = (
       <div class="column">
+        Search for Ten Words !
         {elementZ.map((value, index) => {
           return <span key={index}>{value}</span>;
         })}
-
-        <div>{numOfQueens !== 0 ? winchecker : winpuzzle}</div>
+        {foundH.length == 10 ? celebrate : null}
+        <div>{winchecker}</div>
       </div>
     );
 
     return (
       <div id="entireThing">
         <div>
-          <button type="button" class="button" onClick={() => this.resethome()}>
-            RESET Puzzle
+          <button
+            type="button"
+            class="button"
+            onClick={() => window.location.reload(false)}
+          >
+            Click Here to Generate a New Puzzle
           </button>
         </div>
         <div class="row" id="info">
