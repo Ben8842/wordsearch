@@ -1054,15 +1054,6 @@ class Building extends Component {
             );
           })}
         </ol>
-        <ol>
-          {choicesX.map((value, index) => {
-            return (
-              <li key={index}>
-                ( {value} , {choicesY[index]}, {gridStatus[index]} )
-              </li>
-            );
-          })}
-        </ol>
       </div>
     );
 
@@ -1174,21 +1165,7 @@ class App extends Component {
   render() {
     var { count } = this.state;
 
-    const inputBox = (
-      <div>
-        Choose the size of your board
-        <form>
-          <input type="number" class="button" id="sizeHere"></input>
-          <button
-            type="button"
-            class="button"
-            onClick={() => this.enterCount()}
-          >
-            ENTER
-          </button>
-        </form>
-      </div>
-    );
+    const inputBox = <div></div>;
     return (
       <div>
         <p class="toptitle">Word Search</p>
@@ -1200,3 +1177,27 @@ class App extends Component {
 }
 
 export default App;
+
+/*
+ Choose the size of your board
+        <form>
+          <input type="number" class="button" id="sizeHere"></input>
+          <button
+            type="button"
+            class="button"
+            onClick={() => this.enterCount()}
+          >
+            ENTER
+          </button>
+        </form>*/
+
+/*  List of coordinates
+         <ol>
+          {choicesX.map((value, index) => {
+            return (
+              <li key={index}>
+                ( {value} , {choicesY[index]}, {gridStatus[index]} )
+              </li>
+            );
+          })}
+        </ol> */
